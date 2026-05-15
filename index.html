@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Yellow Truth | Симпсоны предсказали всё</title>
+    <meta name="description" content="35 лет предсказаний. Масонский код. Хантавирус. Трамп. Disney. Эпштейн. Войди в Спрингфилд и узнай правду.">
+    <meta property="og:title" content="The Yellow Truth">
+    <meta property="og:description" content="WE KNEW. THEY KNOW. DO YOU?">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#FFD90F">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🟡</text></svg>">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --yellow: #FFD90F;
+            --yellow-dark: #C4A800;
+            --yellow-glow: rgba(255, 217, 15, 0.6);
+            --red: #8B0000;
+            --red-glow: #ff2020;
+            --red-glow-soft: rgba(255, 32, 32, 0.4);
+            --bg: #0a0a0a;
+            --bg-card: #111;
+            --bg-card-hover: #1a1a1a;
+            --text: #ccc;
+            --text-bright: #fff;
+            --text-dim: #666;
+            --border: #222;
+            --border-active: #444;
+            --font-mono: 'Courier New', monospace;
+            --font-display: 'VT323', monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font-mono);
+            overflow-x: hidden;
+            line-height: 1.7;
+            transition: background 0.5s, color 0.5s;
+        }
+
+        /* Скроллбар */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #222; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--yellow-dark); }
+
+        /* ==================== ЭКРАН ВХОДА ==================== */
+        #entry-screen {
+            position: fixed; top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: #000;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            z-index: 1000; overflow: hidden;
+        }
+
+        #entry-clouds {
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%; opacity: 0.25;
+            background: 
+                radial-gradient(ellipse at 20% 30%, rgba(255,217,15,0.12) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 60%, rgba(255,217,15,0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 80%, rgba(255,217,15,0.05) 0%, transparent 50%);
+            animation: clouds-drift 8s ease-in-out infinite;
+        }
+
+        @keyframes clouds-drift {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(-30px, -15px) scale(1.05); }
+            50% { transform: translate(15px, 25px) scale(0.95); }
+            75% { transform: translate(-10px, -25px) scale(1.02); }
+        }
+
+        .glitch-text {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 6vw, 5rem);
+            color: var(--yellow);
+            text-align: center; position: relative; z-index: 2;
+            animation: glitch-flicker 3s infinite;
+            text-shadow: 
+                0 0 10px var(--yellow),
+                0 0 40px var(--yellow-glow),
+                2px 2px 0 #ff0000,
+                -2px -2px 0 #00ffff;
+            user-select: none;
+        }
+
+        @keyframes glitch-flicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; transform: translate(0); }
+            20% { opacity: 0.4; transform: translate(-4px, 2px); }
+            24% { opacity: 0.7; transform: translate(3px, -1px); }
+            55% { opacity: 0.2; transform: translate(5px, -3px); }
+        }
+
+        #enter-btn {
+            margin-top: 4rem; padding: 1rem 3rem;
+            background: transparent; border: 2px solid var(--yellow);
+            color: var(--yellow); font-family: var(--font-display);
+            font-size: 1.5rem; cursor: pointer;
+            position: relative; z-index: 2;
+            letter-spacing: 4px; transition: all 0.3s;
+            animation: btn-pulse 2s infinite;
+        }
+
+        #enter-btn:hover {
+            background: var(--yellow); color: #000;
+            box-shadow: 0 0 50px var(--yellow-glow);
+            transform: scale(1.05);
+        }
+
+        @keyframes btn-pulse {
+            0%, 100% { border-color: var(--yellow); box-shadow: 0 0 10px var(--yellow-glow); }
+            50% { border-color: #fff; box-shadow: 0 0 30px rgba(255,255,255,0.4); }
+        }
+
+        /* ==================== ЭФФЕКТ РАЗРУШЕНИЯ ==================== */
+        #shatter-overlay {
+            position: fixed; top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: #000; z-index: 999;
+            pointer-events: none; opacity: 0;
+            transition: opacity 0.15s;
+        }
+
+        .shatter-piece {
+            position: absolute; background: #000;
+            border: 1px solid var(--yellow);
+            animation: shatter-fall 3s forwards;
+        }
+
+        @keyframes shatter-fall {
+            0% { transform: translate(0, 0) rotate(0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--dx), var(--dy)) rotate(var(--rot)) scale(0); opacity: 0; }
+        }
+
+        /* ==================== ГЛАВНЫЙ ИНТЕРФЕЙС ==================== */
+        #main-app {
+            display: none; min-height: 100vh;
+            background: var(--bg);
+            animation: fadeIn 0.6s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; filter: blur(10px); }
+            to { opacity: 1; filter: blur(0); }
+        }
+
+        #tab-bar {
+            display: flex; border-bottom: 2px solid #1a1a1a;
+            background: #050505; position: sticky; top: 0; z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .tab {
+            flex: 1; padding: 1.2rem 0.5rem; text-align: center;
+            font-family: var(--font-display); font-size: 1.3rem;
+            color: #555; cursor: pointer; border: none;
+            background: transparent; transition: all 0.3s;
+            position: relative; letter-spacing: 2px;
+        }
+
+        .tab:hover { color: var(--yellow); background: #0f0f0f; }
+        .tab.active { color: var(--yellow); background: #0f0f0f; border-bottom: 3px solid var(--yellow); text-shadow: 0 0 15px var(--yellow); }
+
+        .tab-content { display: none; padding: 2rem 1.5rem; animation: fadeIn 0.5s; }
+        .tab-content.active { display: block; }
+
+        /* ==================== ХРОНИКИ ==================== */
+        #filter-bar {
+            display: flex; gap: 1rem; margin-bottom: 2rem;
+            flex-wrap: wrap; justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 0.6rem 1.5rem; background: transparent;
+            border: 1px solid #333; color: #888;
+            font-family: var(--font-display); font-size: 1rem;
+            cursor: pointer; transition: all 0.3s; letter-spacing: 2px;
+        }
+
+        .filter-btn:hover { border-color: var(--yellow); color: var(--yellow); }
+        .filter-btn.active { background: var(--yellow); color: #000; border-color: var(--yellow); }
+
+        #chronicles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .chronicle-card {
+            background: var(--bg-card); border: 1px solid var(--border);
+            padding: 1.5rem; cursor: pointer;
+            transition: all 0.35s; position: relative;
+            overflow: hidden; border-radius: 2px;
+        }
+
+        .chronicle-card::before {
+            content: ''; position: absolute; top: 0; left: 0;
+            width: 4px; height: 100%;
+            background: transparent; transition: all 0.35s;
+        }
+
+        .chronicle-card:hover {
+            border-color: var(--border-active);
+            box-shadow: 0 0 30px rgba(255,217,15,0.15);
+            transform: translateY(-4px);
+            background: var(--bg-card-hover);
+        }
+
+        .chronicle-card:hover::before { background: var(--yellow); }
+
+        .status-badge {
+            display: inline-block; padding: 0.3rem 0.8rem;
+            font-size: 0.7rem; font-weight: bold;
+            letter-spacing: 2px; margin-bottom: 0.8rem;
+            font-family: var(--font-mono);
+        }
+
+        .badge-hit { background: #1a3a1a; color: #4f4; border: 1px solid #4f4; }
+        .badge-sim { background: #1a1a3a; color: #44f; border: 1px solid #44f; }
+        .badge-pending { background: #3a3a00; color: #ff0; border: 1px solid #ff0; }
+        .badge-miss { background: #3a1a1a; color: #f44; border: 1px solid #f44; }
+
+        .chronicle-card h3 {
+            font-family: var(--font-display); font-size: 1.5rem;
+            color: var(--yellow); margin-bottom: 0.5rem;
+        }
+
+        .chronicle-card .timeline {
+            display: flex; align-items: center; gap: 0.5rem;
+            margin: 0.8rem 0; font-size: 0.85rem; color: #888;
+        }
+
+        .chronicle-card .arrow { color: var(--yellow); font-weight: bold; }
+        .chronicle-card .excerpt { color: #aaa; font-size: 0.9rem; font-style: italic; border-left: 3px solid #333; padding-left: 1rem; margin-top: 1rem; }
+
+        /* ==================== АЙСБЕРГ ==================== */
+        #iceberg-overlay {
+            position: fixed; top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.95);
+            z-index: 2000; display: none;
+            flex-direction: column; align-items: center;
+            justify-content: center;
+        }
+
+        #iceberg-overlay.active { display: flex; }
+
+        #iceberg-canvas { width: 100%; height: 60vh; cursor: grab; }
+        #iceberg-canvas:active { cursor: grabbing; }
+
+        #iceberg-close {
+            position: absolute; top: 1.5rem; right: 2rem;
+            color: var(--yellow); font-size: 2.5rem;
+            cursor: pointer; z-index: 2002;
+            background: none; border: none;
+            font-family: var(--font-mono);
+            transition: all 0.3s;
+        }
+        #iceberg-close:hover { color: #fff; text-shadow: 0 0 20px #fff; transform: scale(1.2); }
+
+        #iceberg-layers-info {
+            position: absolute; bottom: 2rem;
+            left: 50%; transform: translateX(-50%);
+            display: flex; gap: 0.8rem; z-index: 2002;
+            flex-wrap: wrap; justify-content: center;
+        }
+
+        .layer-btn {
+            padding: 0.5rem 1.2rem; background: transparent;
+            border: 1px solid #333; color: #888;
+            cursor: pointer; font-family: var(--font-display);
+            font-size: 0.9rem; transition: all 0.3s;
+            letter-spacing: 1px;
+        }
+
+        .layer-btn:hover { border-color: var(--yellow); color: var(--yellow); box-shadow: 0 0 15px var(--yellow-glow); }
+        .layer-btn.active-layer { border-color: var(--yellow); color: #000; background: var(--yellow); }
+
+        #dossier-panel {
+            position: fixed; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 85%; max-width: 750px;
+            background: #080808; border: 1px solid var(--yellow);
+            padding: 2.5rem; z-index: 2003;
+            display: none; max-height: 75vh;
+            overflow-y: auto; box-shadow: 0 0 80px rgba(255,217,15,0.3);
+        }
+
+        #dossier-panel.active { display: block; animation: fadeIn 0.4s; }
+        #dossier-panel h2 { font-family: var(--font-display); color: var(--yellow); font-size: 2rem; margin-bottom: 1rem; }
+        #dossier-panel h3 { color: var(--yellow-dark); margin: 1.5rem 0 0.5rem; font-family: var(--font-display); font-size: 1.4rem; }
+        #dossier-panel p { margin: 0.8rem 0; line-height: 1.8; }
+        #dossier-close {
+            position: absolute; top: 1rem; right: 1rem;
+            color: var(--yellow); cursor: pointer;
+            font-size: 1.8rem; background: none; border: none;
+            transition: all 0.3s;
+        }
+        #dossier-close:hover { color: #fff; }
+
+        /* ==================== ЛОЖА ==================== */
+        .lodge-section {
+            margin: 2rem 0; padding: 2rem;
+            border: 1px solid #1a1a1a;
+            background: #0d0d0d;
+            border-left: 4px solid var(--red);
+            transition: all 0.3s;
+        }
+
+        .lodge-section:hover { border-left-color: var(--red-glow); box-shadow: 0 0 30px rgba(139,0,0,0.2); }
+
+        .lodge-section h3 {
+            font-family: var(--font-display); font-size: 1.8rem;
+            color: var(--red-glow); margin-bottom: 1rem;
+            text-shadow: 0 0 15px var(--red-glow-soft);
+        }
+
+        .lodge-section p { line-height: 1.8; margin: 1rem 0; }
+        .lodge-section .highlight { color: var(--yellow); font-weight: bold; }
+        .lodge-section .red-highlight { color: var(--red-glow); font-weight: bold; }
+
+        .eye-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem; margin-top: 1.5rem;
+        }
+
+        .eye-item {
+            background: #060606; padding: 1.2rem;
+            text-align: center; border: 1px solid #1a1a1a;
+            transition: all 0.4s;
+        }
+        .eye-item:hover { border-color: var(--yellow); box-shadow: 0 0 25px var(--yellow-glow); transform: translateY(-3px); }
+        .eye-icon { font-size: 3rem; margin-bottom: 0.5rem; }
+
+        /* ==================== БЕЗДНА ==================== */
+        .abyss-card {
+            background: #050505; border: 1px solid #0f0f0f;
+            padding: 2rem; margin: 1.5rem 0;
+            position: relative; transition: all 0.5s;
+            border-left: 4px solid #1a1a1a;
+        }
+
+        .abyss-card:hover {
+            border-left-color: var(--red-glow);
+            box-shadow: 0 0 50px rgba(139,0,0,0.25);
+            transform: perspective(600px) rotateY(1.5deg);
+        }
+
+        .abyss-card h3 { font-family: var(--font-display); font-size: 1.8rem; color: #b00; margin-bottom: 1rem; }
+        .depth-meter { display: flex; gap: 0.4rem; margin: 1rem 0; }
+        .depth-dot {
+            width: 12px; height: 12px; border-radius: 50%;
+            background: #1a0000; transition: all 0.5s;
+        }
+        .depth-dot.filled { background: #f00; box-shadow: 0 0 12px #f00; }
+
+        /* ==================== ФУТЕР ==================== */
+        #global-counter {
+            text-align: center; padding: 2rem;
+            font-family: var(--font-display); color: #333;
+            font-size: 0.95rem; border-top: 1px solid #111;
+            margin-top: 3rem; letter-spacing: 1px;
+        }
+
+        #global-counter span { color: var(--yellow); font-size: 1.1rem; }
+
+        /* ==================== ПАСХАЛКИ ==================== */
+        #easter-egg-indicator {
+            position: fixed; bottom: 1rem; right: 1rem;
+            color: #0a0a0a; font-size: 0.6rem;
+            z-index: 9999; transition: color 0.5s;
+            cursor: default; user-select: none;
+        }
+
+        .glitch-effect { animation: glitch-shift 0.2s; }
+        @keyframes glitch-shift {
+            0% { transform: translate(0); }
+            20% { transform: translate(-5px, 5px); filter: hue-rotate(90deg); }
+            40% { transform: translate(5px, -5px); filter: hue-rotate(-90deg); }
+            60% { transform: translate(-3px, -3px); }
+            80% { transform: translate(3px, 3px); }
+            100% { transform: translate(0); }
+        }
+
+        /* ==================== МОБИЛЬНАЯ ВЕРСИЯ ==================== */
+        @media (max-width: 768px) {
+            #chronicles-grid { grid-template-columns: 1fr; }
+            .tab { font-size: 1rem; padding: 0.8rem 0.3rem; letter-spacing: 0; }
+            #iceberg-canvas { height: 35vh; }
+            #dossier-panel { width: 95%; padding: 1.2rem; max-height: 80vh; }
+            .lodge-section { padding: 1.2rem; }
+            .abyss-card { padding: 1.2rem; }
+            #iceberg-layers-info { gap: 0.3rem; bottom: 1rem; }
+            .layer-btn { padding: 0.4rem 0.7rem; font-size: 0.7rem; letter-spacing: 0; }
+            #filter-bar { gap: 0.5rem; }
+            .filter-btn { padding: 0.4rem 1rem; font-size: 0.8rem; }
+            .glitch-text { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ЭКРАН ВХОДА -->
+    <div id="entry-screen">
+        <div id="entry-clouds"></div>
+        <div class="glitch-text" aria-label="We knew. They know. Do you?">WE KNEW.<br>THEY KNOW.<br>DO YOU?</div>
+        <button id="enter-btn" onclick="enterSpringfield()">[ ВОЙТИ В СПРИНГФИЛД ]</button>
+    </div>
+
+    <!-- ОВЕРЛЕЙ РАЗРУШЕНИЯ -->
+    <div id="shatter-overlay"></div>
+
+    <!-- ГЛАВНЫЙ ИНТЕРФЕЙС -->
+    <div id="main-app">
+        <!-- ВКЛАДКИ -->
+        <div id="tab-bar">
+            <button class="tab active" data-tab="chronicles">📜 ХРОНИКИ</button>
+            <button class="tab" data-tab="lodge">🔺 ЛОЖА</button>
+            <button class="tab" data-tab="abyss">🌑 БЕЗДНА</button>
+        </div>
+
+        <!-- ХРОНИКИ -->
+        <div id="tab-chronicles" class="tab-content active">
+            <div id="filter-bar">
+                <button class="filter-btn active" data-filter="all">ВСЕ</button>
+                <button class="filter-btn" data-filter="TRUE_HIT">✅ ПОПАДАНИЯ</button>
+                <button class="filter-btn" data-filter="SIMULATION_PROOF">👁️ МАСОНСКИЙ СЛЕД</button>
+                <button class="filter-btn" data-filter="FALSE_MISS">❌ ПРОМАХИ</button>
+                <button class="filter-btn" data-filter="PENDING">⏳ ОЖИДАНИЕ</button>
+            </div>
+            <div id="chronicles-grid"></div>
+        </div>
+
+        <!-- ЛОЖА -->
+        <div id="tab-lodge" class="tab-content">
+            <div class="lodge-section">
+                <h3>🔺 КТО ПИШЕТ СЦЕНАРИИ?</h3>
+                <p>Сценаристы «Симпсонов» — не просто комедийные писатели. Это выпускники <span class="highlight">Гарвардского университета</span> и <span class="highlight">Йельского университета</span>. Среди них — члены закрытых клубов: <span class="red-highlight">Skull & Bones</span>, <span class="red-highlight">Porcellian Club</span>, <span class="red-highlight">Alpha Delta Phi</span>. Эти организации — современное воплощение масонских лож. Они рекрутируют будущих лидеров политики, финансов и медиа.</p>
+                <p>Создатель шоу, <span class="highlight">Мэтт Гроунинг</span>, упоминается в судебных документах, связанных с Джеффри Эпштейном. В 2000 году, в серии «Bart to the Future», прозвучала фраза: <em>«Creeps on an island somewhere are secretly running the world».</em> Это не предсказание. Это <span class="red-highlight">признание в прямом эфире</span>, замаскированное под шутку.</p>
+                <p>Эти люди не «угадывают» будущее. Они <span class="highlight">знают его</span>, потому что участвуют в его создании.</p>
+            </div>
+
+            <div class="lodge-section">
+                <h3>🧠 PREDICTIVE PROGRAMMING</h3>
+                <p><span class="highlight">Predictive programming</span> — концепция, согласно которой элиты используют массовую культуру для подготовки населения к запланированным событиям. Фильмы, сериалы, музыка — это инструменты <span class="red-highlight">социальной инженерии</span>.</p>
+                <p>Симпсоны — идеальный носитель. Это «всего лишь мультик». Над ним смеются. Его не анализируют всерьёз. Именно поэтому через него можно транслировать <span class="highlight">любую информацию</span> — она проникает в подсознание, минуя критическое мышление.</p>
+                <p>Если эта теория верна, то события не <em>предсказываются</em> — они <span class="red-highlight">утверждаются</span>. Мы смотрим мультфильм, а нам показывают дорожную карту глобальных событий на десятилетия вперёд.</p>
+            </div>
+
+            <div class="lodge-section">
+                <h3>👁️ МАСОНСКИЙ КОД В КАДРЕ</h3>
+                <p>Символы расставлены повсюду. Достаточно присмотреться:</p>
+                <div class="eye-gallery">
+                    <div class="eye-item"><div class="eye-icon">👁️</div><span>Всевидящее Око — камеры наблюдения, логотип АЭС, глазурь на пончиках</span></div>
+                    <div class="eye-item"><div class="eye-icon">🔺</div><span>Число 33 — высший градус масонства. Повторяется в ключевых эпизодах</span></div>
+                    <div class="eye-item"><div class="eye-icon">🏠</div><span>Розовый дом Симпсонов — цвет Высшего Градуса масонства. Крыша — пирамида</span></div>
+                    <div class="eye-item"><div class="eye-icon">📐</div><span>Циркуль и Наугольник — форма мебели в гостиной Симпсонов</span></div>
+                    <div class="eye-item"><div class="eye-icon">🌅</div><span>Восход в каждой заставке — масонский символ Просвещения</span></div>
+                    <div class="eye-item"><div class="eye-icon">🪑</div><span>Расстановка стульев — всегда треугольником. Ложа в миниатюре</span></div>
+                </div>
+                <p style="margin-top:1.5rem;">В масонской традиции <span class="highlight">3</span> — число ученика, <span class="highlight">5</span> — мастера, <span class="highlight">7</span> — совершенного мастера, <span class="highlight">33</span> — верховного инспектора. Все эти числа встречаются в сериале с пугающей регулярностью.</p>
+            </div>
+
+            <div class="lodge-section">
+                <h3>🟡 ПОЧЕМУ ОНИ ЖЁЛТЫЕ?</h3>
+                <p>Официальное объяснение Мэтта Гроунинга: <em>«Я хотел, чтобы, переключая каналы, зритель думал, что у него сломался телевизор».</em></p>
+                <p>Это самый жуткий ответ из возможных. <span class="highlight">Жёлтый цвет</span> — это цвет, который заставляет мозг остановиться и проверить, всё ли в порядке. Это цвет <span class="red-highlight">принудительного внимания</span>. Ты смотришь на них — и не можешь оторваться. С первой секунды ты <span class="highlight">запрограммирован</span>.</p>
+                <p>В нейробиологии жёлтый — самый заметный цвет для человеческого глаза. В маркетинге — цвет импульсивных покупок. В Симпсонах — цвет <span class="red-highlight">контроля сознания</span>.</p>
+            </div>
+        </div>
+
+        <!-- БЕЗДНА -->
+        <div id="tab-abyss" class="tab-content">
+            <div class="abyss-card">
+                <h3>♾️ СИМУЛЯЦИЯ ОДНОГО ГОДА</h3>
+                <div class="depth-meter"><span class="depth-dot filled"></span><span class="depth-dot filled"></span><span class="depth-dot filled"></span><span class="depth-dot filled"></span><span class="depth-dot"></span></div>
+                <p>35 лет реального времени. Барту по-прежнему 10 лет. Лизе — 8. Мэгги не научилась говорить. В Спрингфилде прошёл <strong>один год</strong>.</p>
+                <p>Это не просто художественный приём. Это <strong>сингулярность</strong> — точка, в которой время схлопывается. Все события человеческой истории — от падения Берлинской стены до пандемии COVID-19 — спрессованы в этот один год. Сценаристы не предсказывают будущее. Они <strong>вытаскивают</strong> его из коллективного бессознательного (Карл Юнг).</p>
+                <p>Или — из того, что им дают на <strong>закрытых брифингах</strong>. Мы видим не предсказания. Мы видим <strong>утверждённый план</strong>.</p>
+            </div>
+
+            <div class="abyss-card">
+                <h3>💀 DEAD BART / ГОМЕР В КОМЕ</h3>
+                <div class="depth-meter"><span class="depth-dot filled"></span><span class="depth-dot filled"></span><span class="depth-dot filled"></span><span class="depth-dot"></span><span class="depth-dot"></span></div>
+                <p>Одна из самых тёмных фанатских теорий: <strong>Барт мёртв</strong>. После падения Гомера в ущелье (серия «Bart the Daredevil») он впадает в кому. Все последующие серии — это <strong>галлюцинация умирающего мозга</strong>.</p>
+                <p>Альтернативная теория: мы смотрим <strong>симуляцию</strong>. 768 эпизодов — это 768 параллельных веток реальности. Квантовое бессмертие персонажей. Каждая серия — <strong>настоящая</strong>, просто в другой вселенной.</p>
+                <p>Если это правда, то смех зрителей — это смех над <strong>агонией</strong>. Мы развлекаемся, наблюдая чужую смерть в петле времени.</p>
+            </div>
+
+            <div class="abyss-card">
+                <h3>🏝️ МЭТТ ГРОУНИНГ ЗНАЛ</h3>
+                <div class="depth-meter"><span class="depth-dot filled"></span><span class="depth-dot filled"></span><span class="depth-dot filled"></span><span class="depth-dot filled"></span><span class="depth-dot filled"></span></div>
+                <p>Связь создателя с Джеффри Эпштейном подтверждена судебными документами. Фраза 2000 года про «creeps on an island» — это не шутка. Это <strong>автобиографическое признание</strong>.</p>
+                <p>Соберите всё вместе: Трамп — 16 лет до выборов. Disney/Fox — 19 лет до сделки. Хантавирус — за месяц до вспышки. Эпштейн — за 19 лет до ареста. Умные часы — за 20 лет до Apple Watch. Субмарина Титан — за 19 лет до катастрофы.</p>
+                <p><strong>Это не пророчества. Это признания.</strong> Они говорили правду, спрятанную за анимацией. Вопрос не в том, <em>как</em> они это делают. Вопрос: <strong>что ещё они показали, а мы не заметили?</strong></p>
+            </div>
+
+            <div class="abyss-card">
+                <h3>⏳ ЧТО ДАЛЬШЕ?</h3>
+                <div class="depth-meter"><span class="depth-dot filled"></span><span class="depth-dot"></span><span class="depth-dot"></span><span class="depth-dot"></span><span class="depth-dot"></span></div>
+                <p>В базе данных есть события с маркировкой <strong style="color:#ff0;">PENDING</strong>. Они ещё не сбылись. Но могут сбыться в любой момент.</p>
+                <p id="pending-counter" style="font-size:2.5rem; text-align:center; color:var(--yellow); font-family:var(--font-display);">Загрузка...</p>
+                <p style="text-align:center;color:#888;">Каждое новое попадание — это подтверждение: <strong>мы внутри сценария</strong>.</p>
+            </div>
+        </div>
+
+        <!-- ФУТЕР -->
+        <div id="global-counter">
+            АРХИВ ОТКРЫТ: <span id="visit-count">1</span> РАЗ &nbsp;|&nbsp;
+            СОБЫТИЙ: <span id="total-events">0</span> &nbsp;|&nbsp;
+            ПОПАДАНИЙ: <span id="total-hits">0</span> &nbsp;|&nbsp;
+            ПРОМАХОВ: <span id="total-misses">0</span> &nbsp;|&nbsp;
+            МАСОНСКИХ СЛЕДОВ: <span id="total-masonic">0</span>
+            <br><span style="font-size:0.7rem;color:#1a1a1a;" id="morse-footer">... .. -- .--. ... --- -. ... / .- .-. . / .-- .- - -.-. .... .. -. --.</span>
+        </div>
+    </div>
+
+    <!-- АЙСБЕРГ -->
+    <div id="iceberg-overlay">
+        <button id="iceberg-close" onclick="closeIceberg()" aria-label="Закрыть">✕</button>
+        <div id="iceberg-canvas"></div>
+        <div id="iceberg-layers-info">
+            <button class="layer-btn" data-layer="0">🌊 НАД ВОДОЙ</button>
+            <button class="layer-btn" data-layer="1">🌫️ ПОВЕРХНОСТЬ</button>
+            <button class="layer-btn" data-layer="2">🌑 ГЛУБИНА</button>
+            <button class="layer-btn" data-layer="3">🕳️ ТЬМА</button>
+            <button class="layer-btn" data-layer="4">💀 ДНО</button>
+        </div>
+    </div>
+
+    <!-- ДОСЬЕ -->
+    <div id="dossier-panel">
+        <button id="dossier-close" onclick="closeDossier()" aria-label="Закрыть досье">✕</button>
+        <div id="dossier-content"></div>
+    </div>
+
+    <!-- ПАСХАЛКА -->
+    <div id="easter-egg-indicator">.</div>
+
+    <script>
+    // ============================================================
+    // БАЗА ДАННЫХ: ВСЕ СОБЫТИЯ (30+)
+    // ============================================================
+    const predictions = [
+        // ===== TRUE HIT =====
+        {
+            id: 1, title: "Президент Трамп", yearSimpsons: 2000, yearReal: 2016,
+            episode: "Bart to the Future (S11E17)", status: "TRUE_HIT",
+            excerpt: "Лиза становится президентом после Трампа. Баннер: 'TRUMP 2016'.",
+            layers: [
+                "Осень 2000 года. Выходит серия «Bart to the Future». Лиза Симпсон — первая женщина-президент США. Она наследует хаос после администрации Дональда Трампа. В кадре — баннер «TRUMP 2016». Шутка о том, что страна обанкротилась при Трампе. Сценарист Дэн Грини позже скажет: «Мы просто хотели самого безумного кандидата, которого можно представить».",
+                "8 ноября 2016 года. Дональд Трамп избран 45-м президентом США. Мир в шоке. Опросы ошиблись. Букмекеры плачут. Сериал показал это за 16 лет. Баннер, год, последствия — совпало всё, включая намёк на экономические проблемы.",
+                "Трамп баллотировался в президенты ещё в 2000 году от Партии реформ. Сценаристы Гарварда вращаются в кругах, где обсуждаются политические амбиции миллиардеров. Это не угадывание. Это осведомлённость о планах человека из их социальной страты.",
+                "Трамп — фигура, связанная с истеблишментом, несмотря на образ 'аутсайдера'. Медийный образ создавался десятилетиями. Сценаристы знали о его амбициях, потому что Трамп — продукт той же элитной среды. Они не предсказали — они знали.",
+                "Если президентство было известно за 16 лет, то выборы — это спектакль. Симпсоны — программка к спектаклю. Кто в программке следующий?"
+            ]
+        },
+        {
+            id: 2, title: "Покупка Fox компанией Disney", yearSimpsons: 1998, yearReal: 2019,
+            episode: "When You Dish Upon a Star (S10E05)", status: "TRUE_HIT",
+            excerpt: "Лого 20th Century Fox: 'A Division of Walt Disney Co'. За 19 лет до сделки.",
+            layers: [
+                "1998 год. Серия «When You Dish Upon a Star». В кадре появляется знаменитая заставка 20th Century Fox, но под логотипом — надпись: «A Division of Walt Disney Co.». Шутка уровня «надпись на заборе». Никто не воспринял всерьёз.",
+                "14 декабря 2017 года Disney объявила о покупке 21st Century Fox за $52.4 миллиарда. Сделка закрыта в марте 2019 года. Симпсоны, которые всегда высмеивали Fox, внезапно стали частью Disney. Шутка 1998 года стала юридическим фактом.",
+                "Слияния такого масштаба не происходят спонтанно. Переговоры длятся годами. Сценаристы, работающие на Fox и вращающиеся в голливудских кругах, могли слышать о подобных обсуждениях задолго до публичных заявлений. Это классический инсайд.",
+                "Disney — компания с глубочайшими масонскими корнями. Уолт Дисней состоял в ложе DeMolay. Штаб-квартира построена по принципу масонского храма. Сценаристы намекали: 'Мы знаем, кто нас купит'. И они знали.",
+                "Fox стала Disney. Симпсоны перешли под контроль мыши. Теперь они предсказывают будущее под крылом компании, которую предсказали. Змея, поедающая свой хвост."
+            ]
+        },
+        {
+            id: 3, title: "Хантавирус на круизном лайнере", yearSimpsons: 1993, yearReal: 2026,
+            episode: "Marge in Chains (S04E21)", status: "TRUE_HIT",
+            excerpt: "Вирус 'Osaka Flu' на корабле. Заражение от грызунов. Карантин. Паника.",
+            layers: [
+                "Ранняя весна 1993 года. Сценаристы запираются в комнате и пишут 21-ю серию четвёртого сезона — «Marge in Chains». В Спрингфилд приходит Osaka Flu. Мардж попадает в изоляцию. Жители в панике скупают товары, аптеки пустеют. Переносчики — заражённые грызуны. Вирус распространяется в замкнутом пространстве — сначала в супермаркете, затем по всему городу. Серия выходит 6 мая 1993 года. Мир смеётся и забывает.",
+                "Май 1993 года. Регион Four Corners, США. Молодая женщина умирает от загадочной лихорадки. Врачи в панике — вирус не идентифицирован. Через неделю CDC объявляет: это хантавирус. Лёгочный синдром. Переносчики — оленьи мыши. Смертность 36%. За несколько месяцев погибают десятки. Серия Симпсонов вышла за несколько недель ДО того, как мир узнал слово 'хантавирус'. 2025-2026 годы — новые вспышки на круизных лайнерах. Замкнутое пространство, карантин в океане, отказ портов принимать судно. Точная копия Osaka Flu.",
+                "33 года между первой вспышкой и возвращением вируса. Число 33 — высший градус масонства — появляется снова. Серия вышла ДО реальной вспышки 1993 года. Это не совпадение. Это знание о том, что вирус существует и будет использован.",
+                "Сценарий мог быть основан на реальных военных разработках. Хантавирус исследовался армией США в Форт-Детрике ещё в 1970-х. Замкнутое пространство лайнера — идеальный полигон для изучения поведения толпы при биоугрозе. Сцена в подвале в серии — 33 человека — точная копия масонского собрания. Это ритуал, а не карантин.",
+                "Вирус предсказан дважды: в 1993 году (вспышка сразу после серии) и в 2025-2026 годах (лайнеры). Это не предсказание. Это расписание. Круизный лайнер — метафора Земли. Мы все в ловушке. И кто-то знает, какой вирус будет следующим."
+            ]
+        },
+        {
+            id: 4, title: "Илон Маск и DOGE", yearSimpsons: 2015, yearReal: 2025,
+            episode: "The Musk Who Fell to Earth (S26E12)", status: "TRUE_HIT",
+            excerpt: "Маск — гостевая звезда. Эксцентричный миллиардер, меняющий правительство.",
+            layers: [
+                "2015 год. Илон Маск появляется в Симпсонах как гений, меняющий Спрингфилд. Шутит про электромобили, Марс и эффективность. В том числе — про Департамент эффективности правительства (DOGE). Шутка, над которой посмеялись.",
+                "2025 год. Дональд Трамп назначает Илона Маска главой реального Department of Government Efficiency (DOGE). Миллиардер буквально управляет правительственной эффективностью. Сериал показал это за 10 лет.",
+                "Маск и сценаристы Симпсонов вращаются в одних кругах — Калифорния, тех-элита, закрытые мероприятия. Вероятность того, что Маск обсуждал подобные амбиции за 10 лет до реализации, крайне высока.",
+                "DOGE — аббревиатура, отсылающая к криптовалюте Dogecoin, которую Маск активно продвигал. Сценаристы соединили два факта о Маске — любовь к Doge и манию правительственной эффективности — и 'предсказали' его реальную должность.",
+                "Если роль Маска была запрограммирована в сериале за 10 лет, то мы наблюдаем шоу внутри шоу. Маск — персонаж, который знает, что он персонаж."
+            ]
+        },
+        {
+            id: 5, title: "Умные часы (Apple Watch)", yearSimpsons: 1995, yearReal: 2015,
+            episode: "Lisa's Wedding (S06E19)", status: "TRUE_HIT",
+            excerpt: "Хью Парк говорит с Мардж по наручным часам с видеоэкраном.",
+            layers: [
+                "1995 год. Серия 'Lisa's Wedding' — взгляд в будущее, 2010 год. Жених Лизы, Хью Парк, общается с Мардж через наручные часы со встроенным видеоэкраном. Технология выглядит как научная фантастика.",
+                "2015 год. Apple представляет Apple Watch с функцией FaceTime-звонков. Видеозвонки с запястья становятся реальностью. Дизайн подозрительно напоминает показанное в сериале.",
+                "В 1995 году не существовало технологии видеозвонков с часов. Это не экстраполяция тренда. Это точное попадание в продукт, который появится через 20 лет.",
+                "Технологические компании используют поп-культуру для тестирования идей. Симпсоны — идеальная фокус-группа. Или сценаристы имели доступ к прототипам через гарвардские связи с Кремниевой долиной.",
+                "Мы хотим то, что увидели. Мы покупаем то, что нам показали. Желания программируются за 20 лет до покупки."
+            ]
+        },
+        {
+            id: 6, title: "Эбола", yearSimpsons: 1997, yearReal: 2014,
+            episode: "Lisa's Sax (S09E03)", status: "TRUE_HIT",
+            excerpt: "Мардж читает книгу 'Любопытный Джордж и вирус Эбола'.",
+            layers: [
+                "1997 год. Мардж держит детскую книгу с названием 'Curious George and the Ebola Virus'. Это шутка на грани чёрного юмора — детская книжка про смертельный вирус.",
+                "2014 год. Вспышка Эболы в Западной Африке. ВОЗ объявляет чрезвычайную ситуацию. Более 11 000 погибших. Мир в панике. Границы закрываются. Вирус, бывший 'экзотикой' в 1997, становится глобальной угрозой.",
+                "Эбола была известна с 1976 года. Но поместить её в детскую книгу в Симпсонах за 17 лет до пандемического страха — это намёк. 'Любопытный Джордж' — книга про обезьянку. Эбола передаётся от обезьян. Деталь не случайна.",
+                "Сценаристы знали: вирусы будут использоваться как инструмент глобального контроля. Они 'шутили' об этом, подготавливая сознание зрителей к будущим пандемиям.",
+                "Эбола, Хантавирус, COVID-19. Симпсоны показывают вирусы до того, как они попадают в новости. Это roadmap пандемий. Следующий вирус уже показан — осталось дождаться."
+            ]
+        },
+        {
+            id: 7, title: "Эпштейн и Остров", yearSimpsons: 2000, yearReal: 2019,
+            episode: "Bart to the Future (S11E17)", status: "SIMULATION_PROOF",
+            excerpt: "Барт: 'Creeps on an island somewhere are secretly running the world'.",
+            layers: [
+                "2000 год. Серия 'Bart to the Future'. Барт Симпсон произносит фразу: «Creeps on an island somewhere are secretly running the world» — «Какие-то мерзавцы на острове тайно управляют миром». Контекст: обсуждение теневого правительства.",
+                "Июль 2019 года. Джеффри Эпштейн арестован по обвинениям в trafficking несовершеннолетних. Его частный остров — Little St. James — становится символом элитной преступной сети. Остров, мерзавцы, тайное управление миром.",
+                "Фраза Барта — не случайная шутка. Создатель шоу Мэтт Гроунинг упоминается в судебных документах, связанных с Эпштейном. Это не предсказание. Это автобиографическая деталь, вставленная в сценарий.",
+                "Если Гроунинг был на острове или вхож в круги Эпштейна, то Симпсоны — это способ публично признаться в том, что знаешь. 'Шутка' как юридическая защита. 'Я же пошутил' — универсальное алиби.",
+                "Сколько ещё правды спрятано в шутках? Каждая комедийная реплика может быть ключом к реальному преступлению. Смотри Симпсонов как свидетельские показания."
+            ]
+        },
+        {
+            id: 8, title: "Субмарина Титан", yearSimpsons: 2004, yearReal: 2023,
+            episode: "Treehouse of Horror XV (S16E01)", status: "TRUE_HIT",
+            excerpt: "Гомер застревает в подводной лодке. Кислород кончается. Отчаянные поиски.",
+            layers: [
+                "Хэллоуинский эпизод 2004 года. Гомер Симпсон оказывается запертым в подводной лодке на дне океана. Кислород на исходе. На поверхности — паника и отчаянные поиски. Обратный отсчёт до смерти.",
+                "18 июня 2023 года. Субмарина 'Титан' с пятью пассажирами пропадает во время погружения к обломкам Титаника. Четыре дня поисков. Имплозия. Все пассажиры погибли. Обратный отсчёт кислорода стал глобальной новостной драмой.",
+                "Совпадают детали, которые невозможно угадать: затонувшая субмарина, обратный отсчёт кислорода, паника на поверхности, туристический подводный аппарат. Серия вышла за 19 лет.",
+                "Кто-то знал, что туристические субмарины опасны. Или сценарий катастрофы был написан заранее как часть predictive programming для реального события. Обратный отсчёт кислорода — идеальный медийный крючок.",
+                "Мы смотрим катастрофы в мультике, а потом переживаем их в реальности. Граница между развлечением и предупреждением стёрта полностью. Следующая катастрофа уже показана."
+            ]
+        },
+        {
+            id: 9, title: "Нобелевская премия Хольмстрёма", yearSimpsons: 2010, yearReal: 2016,
+            episode: "Elementary School Musical (S22E01)", status: "TRUE_HIT",
+            excerpt: "В кадре назван конкретный человек: Бенгт Хольмстрём. И его Нобелевка.",
+            layers: [
+                "2010 год. В серии появляется шутка о том, что профессор экономики MIT Бенгт Хольмстрём получит Нобелевскую премию. Это не вымышленный персонаж. Это реальный учёный, не известный широкой публике.",
+                "2016 год. Бенгт Хольмстрём получает Нобелевскую премию по экономике. Сериал предсказал имя, дисциплину и награду за 6 лет.",
+                "Хольмстрём не был медийной фигурой в 2010 году. Угадать имя конкретного профессора из тысяч экономистов мира — статистически невозможно. Вероятность — 1 к десяткам тысяч.",
+                "Сценаристы Симпсонов — выпускники Гарварда. Многие специализируются на экономике. Они знали Хольмстрёма лично или через академические круги. Они знали, что его работы заслуживают премии. Это инсайд академической элиты.",
+                "Нобелевская премия — не столько награда, сколько сигнал. Симпсоны — часть системы сигналов. Кому ещё они 'предскажут' премию? Следи за именами в сериях."
+            ]
+        },
+        {
+            id: 10, title: "Пандемия / Маски", yearSimpsons: 1997, yearReal: 2020,
+            episode: "The Springfield Files (S08E10)", status: "TRUE_HIT",
+            excerpt: "Жители в масках. Воздушно-капельное заражение. Всеобщий карантин.",
+            layers: [
+                "1997 год. Серия 'The Springfield Files'. Жители Спрингфилда в панике носят защитные маски. Заражение через воздух. Власти вводят карантинные меры. Город в изоляции. Это выглядело как пародия на фильмы ужасов.",
+                "2020 год. COVID-19. Весь мир в масках. Локдауны. Воздушно-капельная передача. Социальная дистанция. Ровно то, что показали Симпсоны за 23 года до пандемии.",
+                "Пандемические планы существовали в ВОЗ и правительствах десятилетиями. Симпсоны не 'предсказали' пандемию — они отразили сценарий, который уже был написан. Вопрос в том, кто дал им этот сценарий.",
+                "Маски в 1997 году выглядели смешно. Маски в 2020 стали обязательными. Это нормализация через юмор. Predictive programming в чистом виде. Мы смеялись — и были подготовлены.",
+                "Мы смеялись в 1997. Мы страдали в 2020. Мы готовы к следующей пандемии. Симпсоны уже показали, какой вирус будет дальше."
+            ]
+        },
+        {
+            id: 11, title: "Кибератака на инфраструктуру", yearSimpsons: 2000, yearReal: 2021,
+            episode: "The Computer Wore Menace Shoes (S12E06)", status: "TRUE_HIT",
+            excerpt: "Хакеры отключают электросети и водоснабжение целого города.",
+            layers: [
+                "2000 год. В Спрингфилде неизвестные хакеры дистанционно отключают критическую инфраструктуру: электричество, воду, связь. Город погружается в хаос. IT-безопасность — шутка.",
+                "Май 2021 года. Атака на Colonial Pipeline — крупнейший трубопровод США. Хакеры-вымогатели остановили топливную инфраструктуру. Паника на заправках. Чрезвычайное положение.",
+                "За 21 год до реальной атаки Симпсоны показали сценарий слово в слово. Дистанционное отключение, зависимость от IT-систем, хаос в городе.",
+                "Кибервойна планировалась Пентагоном десятилетиями. Симпсоны — часть информационной подготовки к эре цифрового террора. Хакеры в сериале — злодеи, но реалистичные.",
+                "Инфраструктура уязвима. Нам показали это в мультике в 2000 году. Мы не подготовились. Теперь это реальность. Что дальше — отключение спутников? Ядерных станций?"
+            ]
+        },
+        {
+            id: 12, title: "Правительственный шатдаун", yearSimpsons: 1998, yearReal: 2025,
+            episode: "Trash of the Titans (S09E22)", status: "TRUE_HIT",
+            excerpt: "Бюджетный кризис. Правительство закрыто. Улицы в мусоре.",
+            layers: [
+                "1998 год. Серия 'Trash of the Titans'. Правительство Спрингфилда закрывается из-за бюджетного кризиса. Коммунальные службы прекращают работу. Город тонет в мусоре.",
+                "2025 год. Правительство США переживает масштабный шатдаун. Бюджетный кризис парализует госучреждения. Ситуация на грани дефолта.",
+                "Шатдауны случались и раньше, но Симпсоны показали механику за годы до того, как это стало регулярным политическим инструментом.",
+                "Сценаристы из Гарварда и Йеля понимают бюджетные циклы правительства США лучше, чем сами конгрессмены. Это не предсказание — это анализ системы изнутри.",
+                "Правительство — это театр. Симпсоны — программка к спектаклю. Шатдауны — запланированная часть шоу. Следи за следующими 'кризисами'."
+            ]
+        },
+        {
+            id: 13, title: "Блокада Суэцкого канала", yearSimpsons: 1991, yearReal: 2021,
+            episode: "The War of the Simpsons (S02E20)", status: "SIMULATION_PROOF",
+            excerpt: "Огромное судно перекрывает водный путь. Глобальный коллапс логистики.",
+            layers: [
+                "1991 год. В серии показано судно, которое застревает и перекрывает важный водный путь. Глобальные последствия для торговли.",
+                "Март 2021 года. Контейнеровоз Ever Given блокирует Суэцкий канал на 6 дней. Мировая торговля теряет миллиарды. Мемы заполняют интернет.",
+                "30 лет между серией и событием. Образ застрявшего судна существовал в коллективном бессознательном задолго до реального инцидента.",
+                "Суэцкий канал — стратегическая артерия. Сценарий его блокады рассматривался военными аналитиками десятилетиями. Сценаристы экстраполировали очевидную уязвимость.",
+                "Если за 30 лет образ стал реальностью, то мы живём в симуляции, которая материализует наши коллективные страхи. Или кто-то читает сценарии Симпсонов и воплощает их."
+            ]
+        },
+        {
+            id: 14, title: "Леди Гага на Супербоуле", yearSimpsons: 2012, yearReal: 2017,
+            episode: "Lisa Goes Gaga (S23E22)", status: "TRUE_HIT",
+            excerpt: "Леди Гага выступает на стадионе. Через 5 лет — Супербоул.",
+            layers: [
+                "2012 год. Леди Гага появляется в Симпсонах как гостевой персонаж. Она выступает на переполненном стадионе в Спрингфилде. Шоу, спецэффекты, толпа.",
+                "2017 год. Леди Гага выступает на шоу в перерыве Супербоула — самом просматриваемом музыкальном событии США. Стадион, спецэффекты, 150 миллионов зрителей.",
+                "Гага — суперзвезда. Но точное попадание в формат 'стадионного шоу' за 5 лет до Супербоула — это больше, чем просто угадывание карьеры певицы.",
+                "Супербоул — не просто спортивное событие. Это масонский ритуал в прямом эфире. Выбор артиста для шоу — решение узкого круга лиц. Сценаристы знали о планах.",
+                "Супербоул — ежегодный ритуал. Симпсоны показали будущую жрицу ритуала за 5 лет. Кто будет следующей?"
+            ]
+        },
+        {
+            id: 15, title: "Коррупция в ФИФА", yearSimpsons: 2014, yearReal: 2015,
+            episode: "You Don't Have to Live Like a Referee (S25E16)", status: "TRUE_HIT",
+            excerpt: "Гомер разоблачает коррупцию среди футбольных чиновников.",
+            layers: [
+                "2014 год. Серия о футбольной коррупции. Гомер становится судьёй и обнаруживает, что футбольные чиновники погрязли в коррупции и взятках.",
+                "2015 год. ФБР арестовывает высших чиновников ФИФА в Цюрихе по обвинению в коррупции, мошенничестве и отмывании денег. Президент Блаттер уходит в отставку.",
+                "Серия вышла за год до арестов. Расследование ФБР шло годами. Сценаристы каким-то образом знали, что скандал близок.",
+                "ФИФА — организация с репутацией, но точный тайминг выхода серии за год до арестов указывает на инсайд. Спортивные журналисты высшего уровня вращаются в тех же кругах, что и сценаристы.",
+                "Спорт — это политика. Политика — это сценарий. Симпсоны читают сценарий раньше нас."
+            ]
+        },
+        {
+            id: 16, title: "Самокаты Bird / Lime", yearSimpsons: 2015, yearReal: 2018,
+            episode: "Teenage Mutant Milk-Caused Hurdles (S27E11)", status: "TRUE_HIT",
+            excerpt: "Спрингфилд заполняют электрические самокаты. Горожане в ярости.",
+            layers: [
+                "2015 год. Спрингфилд внезапно заполоняют электрические самокаты. Жители города в бешенстве — самокаты повсюду, они мешают движению, создают хаос на тротуарах.",
+                "2018 год. Компании Bird и Lime запускают сервисы проката электросамокатов. Города США и мира заполняются самокатами. Те же жалобы, тот же хаос.",
+                "За 3 года до бума самокатов Симпсоны показали точную социальную реакцию на эту технологию. Не просто изобретение, а его социальные последствия.",
+                "Самокаты — часть стратегии 'умных городов'. Сценаристы из тех-среды Калифорнии видели прототипы и знали о планах экспансии.",
+                "Технологии внедряются по плану. Симпсоны показывают план за 3 года. Мы реагируем так, как запрограммировано."
+            ]
+        },
+        // ===== FALSE MISS =====
+        {
+            id: 17, title: "Конец света 2010", yearSimpsons: 2005, yearReal: null,
+            episode: "Thank God It's Doomsday (S16E19)", status: "FALSE_MISS",
+            excerpt: "Гомер вычисляет дату апокалипсиса — 2010 год. Мир не закончился.",
+            layers: [
+                "2005 год. Гомер Симпсон рассчитывает точную дату конца света — 2010 год. Он предупреждает всех, но ему никто не верит.",
+                "2010 год. Апокалипсис не наступает. Человечество продолжает существовать. Предсказание провалилось.",
+                "Однако в 2013 году над Челябинском взорвался метеорит. В 2012-м ждали конца света по календарю майя. Атмосфера апокалипсиса была реальной.",
+                "Ложные предсказания — часть информационной войны. Создать шум, а когда ничего не происходит — дискредитировать саму идею предсказаний.",
+                "Не все пророчества сбываются. Но те, что сбываются, перевешивают промахи с пугающим отрывом."
+            ]
+        },
+        {
+            id: 18, title: "Война с пришельцами", yearSimpsons: 2002, yearReal: null,
+            episode: "Treehouse of Horror XIII (S14E01)", status: "FALSE_MISS",
+            excerpt: "Инопланетное вторжение. Гомер — последняя надежда Земли.",
+            layers: [
+                "2002 год. Хэллоуинский эпизод показывает полномасштабное инопланетное вторжение. Земля в руинах.",
+                "По состоянию на 2025 год инопланетное вторжение не произошло. Официально.",
+                "Пентагон в 2017-2024 годах рассекретил видео с НЛО (UAP). Тема инопланетной угрозы стала мейнстримом. Возможно, мы просто неправильно поняли тайминг.",
+                "Тема инопланетян используется для отвлечения внимания. Или для подготовки к 'фальшивому флагу' внеземной угрозы.",
+                "Не сбылось. Но тема не закрыта."
+            ]
+        },
+        // ===== PENDING =====
+        {
+            id: 19, title: "Американский Папа Римский", yearSimpsons: 1998, yearReal: null,
+            episode: "The Two Mrs. Nahasapeemapetilons (S09E07)", status: "PENDING",
+            excerpt: "Шутка о 'первом американском Папе Римском'. Пока не сбылось.",
+            layers: [
+                "1998 год. В серии появляется шутка о том, что Папой Римским становится американец. Для 1998 года это звучало абсурдно.",
+                "2025 год. Со здоровьем Папы Франциска обсуждается возможный преемник из США. Кардинал Тобин и другие американские прелаты входят в списки папабилей.",
+                "Выбор Папы — один из самых закрытых процессов в мире. Но католическая церковь и элиты США связаны на высших уровнях.",
+                "Если это сбудется — Симпсоны подтвердят статус пророков в очередной раз. Американский Папа — геополитический сдвиг колоссального масштаба.",
+                "Ждём. Счётчик тикает."
+            ]
+        },
+        {
+            id: 20, title: "Новый вирус 'Болезнь Z'", yearSimpsons: 2020, yearReal: null,
+            episode: "The Miseducation of Lisa Simpson (S31E12)", status: "PENDING",
+            excerpt: "Намёк на болезнь, более заразную, чем COVID-19.",
+            layers: [
+                "2020 год. В серии появляется намёк на 'Болезнь Z' — инфекцию, которая должна прийти после COVID и быть значительно опаснее.",
+                "Пока не сбылось. Но учитывая трек-рекорд Симпсонов с Эболой, Хантавирусом и COVID — это вопрос времени.",
+                "Биологическое оружие разрабатывается десятилетиями. Следующий вирус может быть синтетическим.",
+                "Симпсоны показали roadmap пандемий. COVID был третьим. Болезнь Z — следующая.",
+                "Готовься."
+            ]
+        }
+    ];
+
+    // ============================================================
+    // ВХОД В СПРИНГФИЛД
+    // ============================================================
+    function enterSpringfield() {
+        const entryScreen = document.getElementById('entry-screen');
+        const shatterOverlay = document.getElementById('shatter-overlay');
+        const mainApp = document.getElementById('main-app');
+
+        try {
+            const audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+            const bufferSize = audioCtx.sampleRate * 0.6;
+            const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+            const data = buffer.getChannelData(0);
+            for (let i = 0; i < bufferSize; i++) {
+                data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (audioCtx.sampleRate * 0.12));
+            }
+            const source = audioCtx.createBufferSource();
+            source.buffer = buffer;
+            const gainNode = audioCtx.createGain();
+            gainNode.gain.value = 0.25;
+            source.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            source.start();
+        } catch (e) {}
+
+        shatterOverlay.style.opacity = '1';
+        shatterOverlay.style.background = '#000';
+
+        for (let i = 0; i < 60; i++) {
+            const piece = document.createElement('div');
+            piece.className = 'shatter-piece';
+            piece.style.left = Math.random() * 100 + '%';
+            piece.style.top = Math.random() * 100 + '%';
+            piece.style.width = Math.random() * 200 + 40 + 'px';
+            piece.style.height = Math.random() * 150 + 20 + 'px';
+            piece.style.setProperty('--dx', (Math.random() - 0.5) * 900 + 'px');
+            piece.style.setProperty('--dy', (Math.random() - 0.5) * 900 + 'px');
+            piece.style.setProperty('--rot', (Math.random() * 720 - 360) + 'deg');
+            shatterOverlay.appendChild(piece);
+            setTimeout(() => piece.remove(), 3000);
+        }
+
+        const flashTexts = [
+            'TRUMP 2016', '👁️', 'OSAKA FLU', '33°', 'EPSTEIN',
+            'DISNEY FOX', 'ХАНТАВИРУС', 'DEAD BART', 'DOGE',
+            'APPLE WATCH', 'ЭБОЛА', 'ТИТАН', 'НОБЕЛЬ', 'ШАТДАУН'
+        ];
+        flashTexts.forEach((text, i) => {
+            setTimeout(() => {
+                const span = document.createElement('span');
+                span.textContent = text;
+                span.style.cssText = `
+                    position: fixed; z-index: 1002;
+                    top: ${15 + Math.random() * 70}%;
+                    left: ${15 + Math.random() * 70}%;
+                    color: #FFD90F;
+                    font-size: ${1.5 + Math.random() * 3}rem;
+                    font-family: var(--font-display);
+                    opacity: 0; transition: opacity 0.2s;
+                    text-shadow: 0 0 25px #FFD90F;
+                    pointer-events: none;
+                `;
+                document.body.appendChild(span);
+                setTimeout(() => span.style.opacity = '1', 50);
+                setTimeout(() => span.style.opacity = '0', 300);
+                setTimeout(() => span.remove(), 500);
+            }, i * 250);
+        });
+
+        setTimeout(() => {
+            shatterOverlay.style.opacity = '0';
+            entryScreen.style.display = 'none';
+            mainApp.style.display = 'block';
+            setTimeout(() => {
+                shatterOverlay.innerHTML = '';
+                shatterOverlay.style.display = 'none';
+            }, 500);
+            initApp();
+        }, 3200);
+    }
+
+    // ============================================================
+    // ИНИЦИАЛИЗАЦИЯ
+    // ============================================================
+    let totalVisits = Math.floor(Math.random() * 33) + 700;
+    let SIMPcode = [];
+    const SIMPsequence = ['s', 'i', 'm', 'p'];
+
+    function initApp() {
+        renderChronicles('all');
+        updateCounters();
+        setupTabs();
+        setupFilters();
+        setupKeyboardEasterEgg();
+        setupEscHandler();
+        updatePendingCounter();
+        console.log('%c' + decodeMorse(document.getElementById('morse-footer').textContent),
+            'color: #FFD90F; font-size: 1.2rem; font-family: monospace;');
+        console.log('%cНе ищи правду. Она уже нашла тебя.\n742 Evergreen Terrace.\nСпроси у Гомера.',
+            'color: #888; font-style: italic;');
+    }
+
+    function decodeMorse(morse) {
+        const morseCode = {
+            '.-': 'A', '-...': 'B', '-.-.': 'C', '-..': 'D', '.': 'E', '..-.': 'F', '--.': 'G',
+            '....': 'H', '..': 'I', '.---': 'J', '-.-': 'K', '.-..': 'L', '--': 'M', '-.': 'N',
+            '---': 'O', '.--.': 'P', '--.-': 'Q', '.-.': 'R', '...': 'S', '-': 'T', '..-': 'U',
+            '...-': 'V', '.--': 'W', '-..-': 'X', '-.--': 'Y', '--..': 'Z'
+        };
+        return morse.split('/').map(word =>
+            word.trim().split(' ').map(code => morseCode[code] || '?').join('')
+        ).join(' ');
+    }
+
+    function updateCounters() {
+        document.getElementById('total-events').textContent = predictions.length;
+        document.getElementById('total-hits').textContent = predictions.filter(p => p.status === 'TRUE_HIT').length;
+        document.getElementById('total-misses').textContent = predictions.filter(p => p.status === 'FALSE_MISS').length;
+        document.getElementById('total-masonic').textContent = predictions.filter(p => p.status === 'SIMULATION_PROOF').length;
+        document.getElementById('visit-count').textContent = totalVisits++;
+    }
+
+    // ============================================================
+    // ОТРИСОВКА ХРОНИК
+    // ============================================================
+    function renderChronicles(filter) {
+        const grid = document.getElementById('chronicles-grid');
+        grid.innerHTML = '';
+
+        const filtered = filter === 'all' ? predictions : predictions.filter(p => p.status === filter);
+
+        filtered.forEach(pred => {
+            const card = document.createElement('div');
+            card.className = 'chronicle-card';
+            card.onclick = () => openIceberg(pred);
+            card.setAttribute('data-status', pred.status);
+
+            let badgeClass = 'badge-hit', badgeText = 'TRUE HIT';
+            switch (pred.status) {
+                case 'SIMULATION_PROOF': badgeClass = 'badge-sim'; badgeText = 'MASONIC PROOF'; break;
+                case 'PENDING': badgeClass = 'badge-pending'; badgeText = 'PENDING'; break;
+                case 'FALSE_MISS': badgeClass = 'badge-miss'; badgeText = 'FALSE MISS'; break;
+            }
+
+            card.innerHTML = `
+                <span class="status-badge ${badgeClass}">${badgeText}</span>
+                <h3>${pred.title}</h3>
+                <div class="timeline">
+                    <span>🎬 ${pred.yearSimpsons}</span>
+                    <span class="arrow">→</span>
+                    <span>🌍 ${pred.yearReal || '????'}</span>
+                </div>
+                <p style="font-size:0.8rem; color:#666;">${pred.episode}</p>
+                <div class="excerpt">${pred.excerpt}</div>
+            `;
+            grid.appendChild(card);
+        });
+    }
+
+    function setupFilters() {
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                renderChronicles(btn.dataset.filter);
+            });
+        });
+    }
+
+    // ============================================================
+    // АЙСБЕРГ (3D)
+    // ============================================================
+    let currentPrediction = null;
+    let icebergScene, icebergCamera, icebergRenderer, icebergMesh, animationId;
+
+    function openIceberg(prediction) {
+        currentPrediction = prediction;
+        const overlay = document.getElementById('iceberg-overlay');
+        overlay.classList.add('active');
+        document.querySelectorAll('.layer-btn').forEach(b => b.classList.remove('active-layer'));
+        document.getElementById('dossier-panel').classList.remove('active');
+        initIceberg3D();
+    }
+
+    function closeIceberg() {
+        document.getElementById('iceberg-overlay').classList.remove('active');
+        document.getElementById('dossier-panel').classList.remove('active');
+        if (animationId) cancelAnimationFrame(animationId);
+        if (icebergRenderer) {
+            icebergRenderer.dispose();
+            document.getElementById('iceberg-canvas').innerHTML = '';
+        }
+        currentPrediction = null;
+    }
+
+    function initIceberg3D() {
+        const container = document.getElementById('iceberg-canvas');
+        container.innerHTML = '';
+        const width = container.clientWidth;
+        const height = container.clientHeight;
+
+        icebergScene = new THREE.Scene();
+        icebergCamera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+        icebergCamera.position.set(5, 2, 8);
+        icebergCamera.lookAt(0, 0, 0);
+
+        icebergRenderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        icebergRenderer.setSize(width, height);
+        icebergRenderer.setClearColor(0x000000, 0);
+        container.appendChild(icebergRenderer.domElement);
+
+        const ambientLight = new THREE.AmbientLight(0x222222);
+        icebergScene.add(ambientLight);
+        const pointLight = new THREE.PointLight(0xFFD90F, 0.8, 20);
+        pointLight.position.set(5, 8, 5);
+        icebergScene.add(pointLight);
+        const blueLight = new THREE.PointLight(0x0044ff, 0.3, 20);
+        blueLight.position.set(-5, -2, -5);
+        icebergScene.add(blueLight);
+
+        const bergGroup = new THREE.Group();
+        const topGeometry = new THREE.ConeGeometry(1.2, 3, 8, 4);
+        const topMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, emissive: 0x111111, shininess: 100, transparent: true, opacity: 0.9 });
+        const topBerg = new THREE.Mesh(topGeometry, topMaterial);
+        topBerg.position.y = 1.5;
+        bergGroup.add(topBerg);
+
+        const bottomGeometry = new THREE.CylinderGeometry(1.2, 0.6, 4, 8);
+        const bottomMaterial = new THREE.MeshPhongMaterial({ color: 0x004488, emissive: 0x001122, shininess: 50, transparent: true, opacity: 0.7 });
+        const bottomBerg = new THREE.Mesh(bottomGeometry, bottomMaterial);
+        bottomBerg.position.y = -2;
+        bergGroup.add(bottomBerg);
+
+        const layerPositions = [1.8, 0.6, -0.6, -1.8, -3.0];
+        const layerColors = [0xFFD90F, 0xFFFF00, 0xFF8800, 0xFF4400, 0xFF0000];
+        layerPositions.forEach((y, i) => {
+            const ringGeometry = new THREE.TorusGeometry(1.25, 0.03, 16, 32);
+            const ringMaterial = new THREE.MeshBasicMaterial({ color: layerColors[i] });
+            const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+            ring.position.y = y;
+            ring.rotation.x = Math.PI / 2;
+            bergGroup.add(ring);
+        });
+
+        icebergScene.add(bergGroup);
+        icebergMesh = bergGroup;
+
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesCount = 200;
+        const posArray = new Float32Array(particlesCount * 3);
+        for (let i = 0; i < particlesCount * 3; i++) posArray[i] = (Math.random() - 0.5) * 10;
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        const particlesMaterial = new THREE.PointsMaterial({ size: 0.02, color: 0xFFD90F, transparent: true, opacity: 0.5 });
+        const particles = new THREE.Points(particlesGeometry, particlesMaterial);
+        icebergScene.add(particles);
+
+        function animate() {
+            if (!icebergMesh) return;
+            animationId = requestAnimationFrame(animate);
+            icebergMesh.rotation.y += 0.004;
+            particles.rotation.y -= 0.001;
+            particles.rotation.x += 0.0005;
+            icebergRenderer.render(icebergScene, icebergCamera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            if (!icebergRenderer) return;
+            const w = container.clientWidth, h = container.clientHeight;
+            icebergCamera.aspect = w / h;
+            icebergCamera.updateProjectionMatrix();
+            icebergRenderer.setSize(w, h);
+        });
+
+        document.querySelectorAll('.layer-btn').forEach(btn => {
+            btn.onclick = (e) => {
+                e.stopPropagation();
+                const layer = parseInt(btn.dataset.layer);
+                document.querySelectorAll('.layer-btn').forEach(b => b.classList.remove('active-layer'));
+                btn.classList.add('active-layer');
+                showDossier(layer);
+            };
+        });
+    }
+
+    function showDossier(layerIndex) {
+        if (!currentPrediction) return;
+        const panel = document.getElementById('dossier-panel');
+        const content = document.getElementById('dossier-content');
+        const layerNames = ['🌊 НАД ВОДОЙ', '🌫️ ПОВЕРХНОСТЬ', '🌑 ГЛУБИНА', '🕳️ ТЬМА', '💀 ДНО'];
+
+        content.innerHTML = `
+            <h2>${currentPrediction.title}</h2>
+            <p style="color:#888;">${currentPrediction.episode} | 🎬 ${currentPrediction.yearSimpsons} → 🌍 ${currentPrediction.yearReal || '????'}</p>
+            <hr style="border-color:#222; margin:1rem 0;">
+            <h3>${layerNames[layerIndex]}</h3>
+            <p>${currentPrediction.layers[layerIndex]}</p>
+        `;
+        panel.classList.add('active');
+    }
+
+    function closeDossier() {
+        document.getElementById('dossier-panel').classList.remove('active');
+    }
+
+    function setupEscHandler() {
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (document.getElementById('dossier-panel').classList.contains('active')) {
+                    closeDossier();
+                } else if (document.getElementById('iceberg-overlay').classList.contains('active')) {
+                    closeIceberg();
+                }
+            }
+        });
+    }
+
+    // ============================================================
+    // ВКЛАДКИ
+    // ============================================================
+    function setupTabs() {
+        const tabs = document.querySelectorAll('.tab');
+        const contents = document.querySelectorAll('.tab-content');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const targetId = 'tab-' + tab.dataset.tab;
+                tabs.forEach(t => t.classList.remove('active'));
+                contents.forEach(c => c.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById(targetId).classList.add('active');
+                document.getElementById('main-app').classList.add('glitch-effect');
+                setTimeout(() => document.getElementById('main-app').classList.remove('glitch-effect'), 200);
+            });
+        });
+    }
+
+    // ============================================================
+    // ПАСХАЛКИ
+    // ============================================================
+    function setupKeyboardEasterEgg() {
+        document.addEventListener('keydown', (e) => {
+            const key = e.key.toLowerCase();
+            SIMPcode.push(key);
+            if (SIMPcode.length > 4) SIMPcode.shift();
+            if (SIMPcode.join('') === SIMPsequence.join('')) activateYellowMode();
+        });
+    }
+
+    function activateYellowMode() {
+        document.body.style.background = '#FFD90F';
+        document.body.style.color = '#000';
+        document.querySelectorAll('.tab, .filter-btn, .layer-btn, .lodge-section, .abyss-card, .chronicle-card').forEach(el => {
+            el.style.background = '#fff';
+            el.style.color = '#000';
+            el.style.borderColor = '#000';
+        });
+        document.getElementById('easter-egg-indicator').style.color = '#000';
+        document.getElementById('easter-egg-indicator').textContent = '👁️ S.I.M.P. ACTIVATED';
+        setTimeout(() => location.reload(), 3000);
+    }
+
+    document.addEventListener('dblclick', (e) => {
+        if (e.target.closest('#entry-clouds') || e.target.closest('#iceberg-canvas')) {
+            try {
+                const audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(220, audioCtx.currentTime);
+                osc.frequency.linearRampToValueAtTime(55, audioCtx.currentTime + 2.5);
+                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 2.5);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 2.5);
+            } catch (e) {}
+        }
+    });
+
+    function updatePendingCounter() {
+        const pending = predictions.filter(p => p.status === 'PENDING').length;
+        const counter = document.getElementById('pending-counter');
+        if (counter) {
+            counter.textContent = `${pending} события ожидают...`;
+            setInterval(() => counter.style.opacity = counter.style.opacity === '1' ? '0.2' : '1', 1200);
+        }
+    }
+
+    document.getElementById('easter-egg-indicator').addEventListener('click', function() {
+        this.style.color = '#FFD90F';
+        this.textContent = '742 EVERGREEN TERRACE';
+        setTimeout(() => {
+            this.style.color = '#0a0a0a';
+            this.textContent = '.';
+        }, 2000);
+    });
+    </script>
+</body>
+</html>
